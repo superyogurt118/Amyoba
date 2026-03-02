@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Минималистичный сайт о языке</title>
+    <style>
+        /* Сброс отступов и базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: linear-gradient(145deg, #fff0db 0%, #ffd8b0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            color: #3e2e1f;
+        }
+
+        /* Основной карточный контейнер */
+        .card {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 3rem;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 20px 40px -15px rgba(251, 146, 60, 0.3),
+                        0 8px 20px rgba(255, 255, 255, 0.6) inset;
+            border: 1px solid rgba(255, 245, 235, 0.7);
+        }
+
+        /* Заголовок */
+        h1 {
+            font-weight: 350;
+            font-size: 2.8rem;
+            letter-spacing: -0.5px;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #5a3e28;
+            text-shadow: 0 2px 5px rgba(255, 215, 175, 0.8);
+        }
+
+        /* Навигация (вкладки) */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid rgba(255, 190, 130, 0.5);
+            padding-bottom: 1rem;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: #5a3e28;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            background: rgba(255, 235, 215, 0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 200, 150, 0.4);
+            box-shadow: 0 4px 8px rgba(255, 165, 100, 0.1);
+            letter-spacing: 0.3px;
+        }
+
+        .tab-button:hover {
+            background: rgba(255, 215, 175, 0.7);
+            border-color: #ffb77c;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(255, 140, 70, 0.2);
+        }
+
+        .tab-button.active {
+            background: #ffdec2;
+            border-color: #ff9f5b;
+            color: #3b2c1c;
+            font-weight: 450;
+            box-shadow: 0 6px 12px rgba(255, 140, 60, 0.25);
+            border-width: 2px;
+        }
+
+        /* Контейнер контента */
+        .content-area {
+            background: rgba(255, 245, 235, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 2.5rem;
+            padding: 2.2rem 2rem;
+            border: 1px solid rgba(255, 210, 170, 0.6);
+            box-shadow: 0 10px 25px -10px rgba(255, 150, 80, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Стиль для страницы‑заглушки */
+        .placeholder-message {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: #a6693c;
+            text-align: center;
+            line-height: 1.5;
+            opacity: 0.8;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .placeholder-message small {
+            font-size: 1.2rem;
+            color: #b07d54;
+            font-style: italic;
+            border-top: 1px dashed #ffc8a2;
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Анимация переключения (опционально) */
+        .tab-pane {
+            display: none;
+            width: 100%;
+        }
+
+        .tab-pane.active-pane {
+            display: block;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 550px) {
+            .card {
+                padding: 1.8rem 1.2rem;
+                border-radius: 2rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .tab-button {
+                font-size: 1.1rem;
+                padding: 0.5rem 1.2rem;
+            }
+
+            .placeholder-message {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>☁️ язык · мягкий старт</h1>
+
+        <!-- Вкладки -->
+        <div class="tabs" id="tabsContainer">
+            <button class="tab-button active" data-tab="about">О языке</button>
+            <button class="tab-button" data-tab="alphabet">Алфавит</button>
+            <button class="tab-button" data-tab="rules">Правила</button>
+            <button class="tab-button" data-tab="exercises">Упражнения</button>
+        </div>
+
+        <!-- Области контента (по одной на вкладку) -->
+        <div class="content-area">
+            <div id="about" class="tab-pane active-pane">
+                <div class="placeholder-message">
+                    🌅 здесь пока ничего нет
+                    <small>раздел об языке · скоро появится</small>
+                </div>
+            </div>
+            <div id="alphabet" class="tab-pane">
+                <div class="placeholder-message">
+                    🔤 здесь пока ничего нет
+                    <small>алфавит · скоро появится</small>
+                </div>
+            </div>
+            <div id="rules" class="tab-pane">
+                <div class="placeholder-message">
+                    📘 здесь пока ничего нет
+                    <small>правила · скоро появятся</small>
+                </div>
+            </div>
+            <div id="exercises" class="tab-pane">
+                <div class="placeholder-message">
+                    ✏️ здесь пока ничего нет
+                    <small>упражнения · скоро появятся</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const tabs = document.querySelectorAll('.tab-button');
+            const panes = {
+                about: document.getElementById('about'),
+                alphabet: document.getElementById('alphabet'),
+                rules: document.getElementById('rules'),
+                exercises: document.getElementById('exercises')
+            };
+
+            // Функция переключения вкладок
+            function switchTab(tabId) {
+                // Убираем активный класс у всех кнопок
+                tabs.forEach(btn => btn.classList.remove('active'));
+                // Находим кнопку с нужным data-tab и делаем её активной
+                const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+                if (activeButton) activeButton.classList.add('active');
+
+                // Скрываем все панели
+                Object.values(panes).forEach(pane => {
+                    if (pane) pane.classList.remove('active-pane');
+                });
+
+                // Показываем нужную панель, если она существует
+                if (panes[tabId]) {
+                    panes[tabId].classList.add('active-pane');
+                }
+            }
+
+            // Навешиваем обработчики на кнопки
+            tabs.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tabId = btn.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+
+            // Убедимся, что начальное состояние корректно (активна вкладка «О языке»)
+            // На случай, если в HTML что-то изменится — синхронизируем
+            const initiallyActive = document.querySelector('.tab-button.active');
+            if (initiallyActive) {
+                const initialTab = initiallyActive.getAttribute('data-tab');
+                if (initialTab && panes[initialTab]) {
+                    // Скрыть все, показать нужную
+                    Object.values(panes).forEach(p => p?.classList.remove('active-pane'));
+                    panes[initialTab].classList.add('active-pane');
+                }
+            } else {
+                // если по какой‑то причине нет активного класса, активируем "about"
+                switchTab('about');
+            }
+        })();
+    </script>
+</body>
+</html>
