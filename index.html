@@ -7,108 +7,65 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #fffdf5;
-            --header-bg: #ffffff;
-            --text-color: #333;
-            --card-bg: #ffffff;
-            --card-border: #eeeeee;
-            --gold-grad: linear-gradient(135deg, #ffd700 0%, #d4af37 100%);
-            --shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
+            --bg: #fffdf5; --txt: #333; --card: #fff;
+            --gold: linear-gradient(135deg, #ffd700, #d4af37);
         }
-
         [data-theme="dark"] {
-            --bg-color: #121212;
-            --header-bg: #1e1e1e;
-            --text-color: #e0e0e0;
-            --card-bg: #1e1e1e;
-            --card-border: #333333;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            --bg: #121212; --txt: #e0e0e0; --card: #1e1e1e;
         }
-
-        body { 
-            font-family: 'Montserrat', sans-serif; margin: 0; 
-            background: var(--bg-color); color: var(--text-color); 
-            line-height: 1.7; font-size: 18px; transition: 0.3s;
-        }
-
-        header { 
-            background: var(--header-bg); border-bottom: 4px solid #ffd700;
-            position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
-
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 5%; max-width: 1200px; margin: 0 auto; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--txt); margin: 0; transition: 0.3s; }
+        header { background: var(--card); border-bottom: 4px solid #ffd700; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .logo { font-weight: bold; font-size: 22px; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
+        .nav-links a { margin-left: 15px; cursor: pointer; font-weight: bold; }
         
-        .logo-text { 
-            font-size: 26px; font-weight: 700; 
-            background: var(--gold-grad); -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; cursor: pointer; 
-        }
-
-        .nav-right { display: flex; align-items: center; gap: 20px; }
-        .nav-links { list-style: none; display: flex; gap: 20px; padding: 0; margin: 0; }
-        .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 700; cursor: pointer; }
-
-        #theme-btn {
-            background: var(--gold-grad); border: none; color: #fff;
-            padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold;
-        }
-
-        .content-section { display: none; padding: 40px 5%; max-width: 1000px; margin: 0 auto; }
-        .content-section.active { display: block; animation: fadeInUp 0.4s ease; }
-
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
+        .content-section { display: none; padding: 30px 5%; max-width: 800px; margin: 0 auto; }
+        .content-section.active { display: block; }
+        
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; }
         
+        /* Стиль карточки */
         .card { 
-            background: var(--card-bg); border: 2px solid var(--card-border); 
-            padding: 25px 10px; text-align: center; border-radius: 15px; 
-            font-size: 1.6rem; font-weight: 700; transition: 0.2s; 
-            cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+            background: var(--card); border: 2px solid #eee; padding: 15px; 
+            border-radius: 15px; text-align: center; font-size: 1.4rem; font-weight: bold;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
         }
-        .card:active { border-color: #ffd700; transform: scale(0.95); box-shadow: var(--shadow); }
+        [data-theme="dark"] .card { border-color: #333; }
 
-        #speech-bubble {
-            position: fixed; top: 120px; left: 50%; transform: translateX(-50%);
-            background: var(--gold-grad); color: white; padding: 12px 30px;
-            border-radius: 50px; font-weight: bold; z-index: 2000; display: none;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        /* Кнопка звука */
+        .speak-btn {
+            background: var(--gold); border: none; color: white; 
+            width: 35px; height: 35px; border-radius: 50%; 
+            cursor: pointer; font-size: 16px; display: flex; 
+            align-items: center; justify-content: center; transition: 0.2s;
         }
+        .speak-btn:hover { transform: scale(1.1); }
+        .speak-btn:active { transform: scale(0.9); }
 
-        .list-item { 
-            background: var(--card-bg); padding: 20px; border-radius: 15px; 
-            margin-bottom: 15px; border-left: 6px solid #d4af37; box-shadow: var(--shadow); 
-        }
-
-        @media (max-width: 768px) { .nav-links { display: none; } }
+        .list-item { background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 10px; border-left: 5px solid #ffd700; }
+        #theme-btn { background: var(--gold); border: none; color: white; padding: 5px 12px; border-radius: 15px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div id="speech-bubble"></div>
-
 <header>
-    <nav>
-        <div class="logo-text" onclick="showSection('home')">Вакеатэ Мовын</div>
-        <div class="nav-right">
-            <ul class="nav-links">
-                <li><a onclick="showSection('alphabet')">Буквы</a></li>
-                <li><a onclick="showSection('vocab')">Словарь</a></li>
-            </ul>
-            <button id="theme-btn" onclick="cycleTheme()">Тема: Авто</button>
-        </div>
-    </nav>
+    <div class="logo" onclick="showSection('home')">Вакеатэ Мовын</div>
+    <div class="nav-right">
+        <span class="nav-links">
+            <a onclick="showSection('alphabet')">Буквы</a>
+            <a onclick="showSection('vocab')">Слова</a>
+        </span>
+        <button id="theme-btn" onclick="cycleTheme()" style="margin-left:15px;">Тема</button>
+    </div>
 </header>
 
 <main>
     <section id="home" class="content-section active">
-        <h1 style="text-align: center; font-size: 2.5rem;">Вакеатэ Мовын</h1>
-        <p style="text-align: center;">Язык, где <b>Ё</b> — это <b>Ё</b>. Нажми на «Буквы», чтобы начать обучение.</p>
+        <h1>Датчэ!</h1>
+        <p>Нажми на иконку 🔊 рядом с буквой или словом, чтобы услышать произношение.</p>
     </section>
 
     <section id="alphabet" class="content-section">
         <h2>Алфавит</h2>
-        <p style="margin-bottom: 20px;">Нажми и удерживай букву, чтобы услышать её чтение.</p>
         <div class="grid" id="alpha-grid"></div>
     </section>
 
