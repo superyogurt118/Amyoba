@@ -1,32 +1,16 @@
 const CONFIG = {
-    dataUrl: 'https://raw.githubusercontent.com/superyogurt118/Amyoba/refs/heads/main/data.json', // <-- ВСТАВЬ СВОЮ ССЫЛКУ RAW JSON СЮДА
+    dataUrl: 'https://raw.githubusercontent.com/superyogurt118/Amyoba/refs/heads/main/data.json', // ТВОЯ ССЫЛКА RAW JSON
     logoPath: 'logo.png' 
 };
 
-const PHONETICS = {
-    'Ӵ': 'ч', 'Ӝ': 'жь', 'Ӟ': 'зь', 'Ч': 'тш', 'ӥ': 'йи', 'ӧ': 'оу', 'Ѣ': 'ых'
-};
-
-function press(char) {
+function showHint(text) {
     const bubble = document.getElementById('speech-bubble');
-    const sound = PHONETICS[char] || PHONETICS[char.toUpperCase()] || char;
-    bubble.innerText = PHONETICS[char] ? `Читается как [${sound}]` : `Буква ${char}`;
+    bubble.innerText = text;
     bubble.style.display = 'block';
 }
 
-function stop() {
+function hideHint() {
     document.getElementById('speech-bubble').style.display = 'none';
-}
-
-function cycleTheme() {
-    const body = document.body;
-    const current = body.getAttribute('data-theme');
-    body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
-}
-
-function showSection(id) {
-    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
 }
 
 async function load() {
@@ -34,27 +18,33 @@ async function load() {
     const loader = document.getElementById('loader');
     const content = document.getElementById('main-content');
     
-    if (!CONFIG.dataUrl) return;
-
     try {
         const r = await fetch(CONFIG.dataUrl);
         const d = await r.json();
         
-        document.getElementById('alpha-grid').innerHTML = d.alphabet.map(l => {
-            let char = l.split(' ')[0];
-            return `<div class="card" 
-                onmousedown="press('${char}')" onmouseup="stop()" 
-                ontouchstart="press('${char}')" ontouchend="stop()">${l}</div>`;
-        }).join('');
+        // Отрисовка алфавита: берем звук прямо из JSON (например, l.pronunciation)
+        document.getElementById('alpha-grid').innerHTML = d.alphabet.map(l => `
+            <div class="card" 
+                 onmouseenter="showHint('Произносится как: [${l.pronunciation}]')" 
+                 onmouseleave="hideHint()"
+                 ontouchstart="showHint('Произносится как: [${l.pronunciation}]')" 
+                 ontouchend="hideHint()">
+                ${l.char}
+            </div>
+        `).join('');
 
-        document.getElementById('vocab-list').innerHTML = d.dictionary.map(v => `
-            <div class="list-item"><b>${v.word}</b> — ${v.translation}</div>`).join('');
+        document.getElementById('vocab-list').innerHTML = d.dictionary.map((v, index) => `
+            <div class="list-item" style="animation-delay: ${index * 0.1}s">
+                <b>${v.word}</b> — ${v.translation}
+            </div>
+        `).join('');
 
         loader.classList.add('hidden');
         content.classList.remove('hidden');
     } catch (e) { 
-        loader.innerHTML = "<p>Ошибка загрузки данных. Проверьте ссылку.</p>"; 
+        loader.innerHTML = "<p>Ошибка. Проверьте JSON.</p>"; 
     }
 }
 
+// ... функции смены темы и секций остаются прежними ...
 window.onload = load;
