@@ -5,45 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вакеатэ Мовын</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #fffdf5; --txt: #333; --card: #fff;
-            --gold: linear-gradient(135deg, #ffd700, #d4af37);
-        }
-        [data-theme="dark"] {
-            --bg: #121212; --txt: #e0e0e0; --card: #1e1e1e;
-        }
-        body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--txt); margin: 0; transition: 0.3s; }
-        header { background: var(--card); border-bottom: 4px solid #ffd700; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { font-weight: bold; font-size: 22px; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
-        .nav-links a { margin-left: 15px; cursor: pointer; font-weight: bold; }
-        
-        .content-section { display: none; padding: 30px 5%; max-width: 800px; margin: 0 auto; }
-        .content-section.active { display: block; }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; }
-        
-        /* Стиль карточки */
-        .card { 
-            background: var(--card); border: 2px solid #eee; padding: 15px; 
-            border-radius: 15px; text-align: center; font-size: 1.4rem; font-weight: bold;
-            display: flex; flex-direction: column; align-items: center; gap: 10px;
-        }
-        [data-theme="dark"] .card { border-color: #333; }
-
-        /* Кнопка звука */
-        .speak-btn {
-            background: var(--gold); border: none; color: white; 
-            width: 35px; height: 35px; border-radius: 50%; 
-            cursor: pointer; font-size: 16px; display: flex; 
-            align-items: center; justify-content: center; transition: 0.2s;
-        }
-        .speak-btn:hover { transform: scale(1.1); }
-        .speak-btn:active { transform: scale(0.9); }
-
-        .list-item { background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 10px; border-left: 5px solid #ffd700; }
-        #theme-btn { background: var(--gold); border: none; color: white; padding: 5px 12px; border-radius: 15px; cursor: pointer; font-weight: bold; }
-    </style>
+    
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -61,7 +24,7 @@
 <main>
     <section id="home" class="content-section active">
         <h1>Датчэ!</h1>
-        <p>Нажми на иконку 🔊 рядом с буквой или словом, чтобы услышать произношение.</p>
+        <p>Добро пожаловать. Нажми на иконку 🔊, чтобы услышать произношение.</p>
     </section>
 
     <section id="alphabet" class="content-section">
