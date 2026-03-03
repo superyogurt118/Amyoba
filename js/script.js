@@ -1,12 +1,13 @@
-// 1. ВСТАВЬ СВОЮ ССЫЛКУ RAW JSON В КАВЫЧКИ
-const DATA_URL = 'https://raw.githubusercontent.com/superyogurt118/Amyoba/refs/heads/main/data.json'; 
+// --- ТВОИ НАСТРОЙКИ ---
+const CONFIG = {
+    dataUrl: 'https://raw.githubusercontent.com/superyogurt118/Amyoba/refs/heads/main/data.json',        // <--- ВСТАВЬ ССЫЛКУ НА RAW JSON СЮДА
+    logoPath: 'logo.png' 
+};
 
-// 2. Правила чтения
 const PHONETICS = {
     'Ӵ': 'ч', 'Ӝ': 'жь', 'Ӟ': 'зь', 'Ч': 'тш', 'ӥ': 'йи', 'ӧ': 'оу', 'Ѣ': 'ых'
 };
 
-// 3. Функция озвучки
 function speak(text) {
     window.speechSynthesis.cancel();
     const msg = new SpeechSynthesisUtterance(text);
@@ -15,13 +16,13 @@ function speak(text) {
     window.speechSynthesis.speak(msg);
 }
 
-// 4. Темы
 let themeIdx = 0;
 const themes = ['auto', 'light', 'dark'];
 function cycleTheme() {
     themeIdx = (themeIdx + 1) % 3;
     applyTheme(themes[themeIdx]);
 }
+
 function applyTheme(t) {
     const btn = document.getElementById('theme-btn');
     const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -30,28 +31,41 @@ function applyTheme(t) {
     btn.innerText = t === 'auto' ? "Тема: Авто" : (t === 'dark' ? "Тема: Тёмная" : "Тема: Светлая");
 }
 
-// 5. Загрузка данных
 async function load() {
+    // Автоматически подставляем логотип из настроек
+    const img = document.getElementById('main-logo');
+    if (img) img.src = CONFIG.logoPath;
+
     applyTheme('auto');
-    if (!DATA_URL) return;
+    const loader = document.getElementById('loader');
+    const content = document.getElementById('main-content');
+
+    if (!CONFIG.dataUrl) {
+        loader.innerHTML = "<p>Нужна ссылка на JSON в CONFIG.dataUrl</p>";
+        return;
+    }
+
     try {
-        const r = await fetch(DATA_URL);
+        const r = await fetch(CONFIG.dataUrl);
         const d = await r.json();
         
-        // Буквы
         document.getElementById('alpha-grid').innerHTML = d.alphabet.map(l => {
             let c = l.split(' ')[0];
             let s = PHONETICS[c] || PHONETICS[c.toUpperCase()] || c;
             return `<div class="card"><span>${l}</span><button class="speak-btn" onclick="speak('${s}')">🔊</button></div>`;
         }).join('');
 
-        // Слова
         document.getElementById('vocab-list').innerHTML = d.dictionary.map(v => `
             <div class="list-item">
                 <span><b>${v.word}</b> — ${v.translation}</span>
                 <button class="speak-btn" onclick="speak('${v.word}')">🔊</button>
             </div>`).join('');
-    } catch (e) { console.error("Ошибка загрузки:", e); }
+
+        loader.classList.add('hidden');
+        content.classList.remove('hidden');
+    } catch (e) { 
+        loader.innerHTML = "<p>Ошибка загрузки данных.</p>";
+    }
 }
 
 function showSection(id) {
