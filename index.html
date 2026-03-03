@@ -5,43 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вакеатэ Мовын</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #fffdf5; color: #333; }
-        header { background: #fff; border-bottom: 3px solid #ffd700; position: sticky; top: 0; z-index: 1000; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #fffdf5; color: #333; line-height: 1.6; }
+        header { background: #fff; border-bottom: 3px solid #ffd700; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 5%; max-width: 1200px; margin: 0 auto; }
-        
-        .logo-container { display: flex; align-items: center; cursor: pointer; user-select: none; gap: 15px; }
+        .logo-container { display: flex; align-items: center; gap: 15px; text-decoration: none; cursor: pointer; }
         .logo-img { width: 60px; height: auto; }
         .logo-text { font-size: 24px; font-weight: bold; color: #d4af37; }
-
         .nav-links { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
-        .nav-links a { text-decoration: none; color: #555; font-weight: 600; cursor: pointer; }
-        .nav-links a:hover { color: #ffd700; }
-
-        .content-section { display: none; padding: 40px 5%; max-width: 1000px; margin: 0 auto; }
+        .nav-links li a { text-decoration: none; color: #555; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .nav-links li a:hover { color: #ffd700; }
+        .content-section { display: none; padding: 40px 5%; max-width: 1000px; margin: 0 auto; animation: fadeIn 0.4s; }
         .content-section.active { display: block; }
-
-        /* Стили редактора */
-        #admin-panel { 
-            display: none; position: fixed; bottom: 20px; right: 20px; 
-            background: #fff; border: 2px solid #ffd700; padding: 15px; 
-            border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 2000;
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; margin-top: 20px; }
+        .card { background: #fff; border: 1px solid #ffd700; padding: 15px; text-align: center; border-radius: 8px; font-weight: bold; }
+        .list-item { background: #fff; border: 1px solid #eee; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 5px solid #ffd700; }
+        .menu-toggle { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
+        .menu-toggle span { width: 25px; height: 3px; background: #ffd700; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; flex-direction: column; padding: 20px 0; text-align: center; border-bottom: 2px solid #ffd700; }
+            .nav-links.show { display: flex; }
         }
-        .admin-btn { background: #ffd700; border: none; padding: 8px 12px; cursor: pointer; margin: 5px; font-weight: bold; border-radius: 5px; }
-        [contenteditable="true"] { border: 1px dashed #ffd700; padding: 2px; min-width: 20px; display: inline-block; }
-
-        /* Сетки для контента */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 20px; }
-        .card { background: #fff; border: 1px solid #ffd700; padding: 15px; text-align: center; border-radius: 8px; }
-        .item-list { background: #fff; padding: 20px; border-radius: 10px; border: 1px solid #eee; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <header>
     <nav>
-        <div class="logo-container" id="site-logo">
+        <div class="logo-container" onclick="showSection('home')">
             <img src="logo.png" alt="logo" class="logo-img">
             <span class="logo-text">Вакеатэ Мовын</span>
+        </div>
+        <div class="menu-toggle" onclick="document.getElementById('nav-list').classList.toggle('show')">
+            <span></span><span></span><span></span>
         </div>
         <ul class="nav-links" id="nav-list">
             <li><a onclick="showSection('home')">Главная</a></li>
@@ -52,106 +49,75 @@
     </nav>
 </header>
 
-<main id="main-content">
+<main>
     <section id="home" class="content-section active">
-        <h1 contenteditable="false">Вакеатэ Мовын</h1>
-        <p contenteditable="false">Это вымышленный язык, который основан на русском языке, но мы пытаемся сделать из русского языка что-то уникальное. Добро пожаловать!</p>
+        <h1 id="h-title">Загрузка...</h1>
+        <p id="h-desc">Синхронизация данных из GitHub...</p>
     </section>
 
     <section id="alphabet" class="content-section">
         <h2>Алфавит</h2>
-        <div class="grid" id="alphabet-grid">
-            <div class="card" contenteditable="false">А а</div>
-            <div class="card" contenteditable="false">Б б</div>
-            <div class="card" contenteditable="false">Ѣ ѣ</div>
-        </div>
+        <div class="grid" id="alpha-grid"></div>
     </section>
 
     <section id="grammar" class="content-section">
         <h2>Грамматика</h2>
-        <div id="grammar-list">
-            <div class="item-list"><b contenteditable="false">Правило №1</b>: <span contenteditable="false">Описание правила...</span></div>
-        </div>
+        <div id="gram-list"></div>
     </section>
 
     <section id="vocab" class="content-section">
         <h2>Словарь</h2>
-        <div id="vocab-list">
-            <div class="item-list"><b contenteditable="false">Слово</b> — <span contenteditable="false">Перевод</span></div>
-        </div>
+        <div id="vocab-list"></div>
     </section>
 </main>
 
-<div id="admin-panel">
-    <h4 style="margin:0 0 10px 0">Режим редактора</h4>
-    <button class="admin-btn" onclick="addTab()">+ Вкладка</button>
-    <button class="admin-btn" onclick="addItem('alphabet-grid', 'card', 'X x')">+ Буква</button>
-    <button class="admin-btn" onclick="addItem('grammar-list', 'item-list', '<b>Новое правило</b>: описание')">+ Правило</button>
-    <button class="admin-btn" onclick="addItem('vocab-list', 'item-list', '<b>Слово</b> — перевод')">+ Слово</button>
-    <button class="admin-btn" style="background:#ff4444; color:#fff" onclick="location.reload()">Выйти и Сохранить</button>
-</div>
-
 <script>
-    let clickCount = 0;
-    const logo = document.getElementById('site-logo');
-    const adminPanel = document.getElementById('admin-panel');
+    /**
+     * ВАЖНО: Вставь ниже прямую ссылку на твой data.json.
+     * Чтобы её получить: на GitHub открой data.json -> нажми кнопку 'Raw' -> скопируй адрес из браузера.
+     * Она должна начинаться на https://raw.githubusercontent.com/...
+     */
+    const DATA_URL = ''; // <-- ТВОЯ ССЫЛКА СЮДА
 
-    // 1. Активация редактора (3 клика)
-    logo.addEventListener('click', () => {
-        clickCount++;
-        if (clickCount === 3) {
-            let pass = prompt("Введите код доступа:");
-            if (pass === "Жаёмна67") {
-                activateEditor();
-            } else {
-                alert("Неверный код!");
-                clickCount = 0;
-            }
+    async function fetchData() {
+        if (!DATA_URL) {
+            document.getElementById('h-title').innerText = "Настройка не завершена";
+            document.getElementById('h-desc').innerText = "Нужно вставить ссылку на data.json в коде (строка 76).";
+            return;
         }
-        setTimeout(() => clickCount = 0, 2000); 
-    });
 
-    function activateEditor() {
-        adminPanel.style.display = 'block';
-        document.querySelectorAll('[contenteditable]').forEach(el => el.contentEditable = true);
-        alert("Редактор активирован! Теперь вы можете нажать на любой текст и изменить его.");
+        try {
+            const response = await fetch(DATA_URL);
+            const data = await response.json();
+            render(data);
+        } catch (e) {
+            document.getElementById('h-title').innerText = "Ошибка данных";
+            document.getElementById('h-desc').innerText = "Не удалось прочитать data.json. Проверь ссылку.";
+        }
     }
 
-    // 2. Навигация
+    function render(data) {
+        document.getElementById('h-title').innerText = "Вакеатэ Мовын";
+        document.getElementById('h-desc').innerText = "Добро пожаловать в мир уникального языка на базе русского!";
+
+        document.getElementById('alpha-grid').innerHTML = data.alphabet.map(l => `<div class="card">${l}</div>`).join('');
+        
+        document.getElementById('gram-list').innerHTML = data.grammar.map(r => `
+            <div class="list-item"><h3>${r.title}</h3><p>${r.text}</p></div>
+        `).join('');
+
+        document.getElementById('vocab-list').innerHTML = data.dictionary.map(v => `
+            <div class="list-item"><b>${v.word}</b> — ${v.translation}</div>
+        `).join('');
+    }
+
     function showSection(id) {
         document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
+        document.getElementById('nav-list').classList.remove('show');
     }
 
-    // 3. Добавление элементов
-    function addItem(containerId, className, defaultHTML) {
-        const container = document.getElementById(containerId);
-        const div = document.createElement('div');
-        div.className = className;
-        div.contentEditable = true;
-        div.innerHTML = defaultHTML;
-        container.appendChild(div);
-    }
-
-    function addTab() {
-        let tabName = prompt("Название новой вкладки:");
-        if (tabName) {
-            let id = 'tab-' + Date.now();
-            // Добавляем в меню
-            const nav = document.getElementById('nav-list');
-            const li = document.createElement('li');
-            li.innerHTML = `<a onclick="showSection('${id}')">${tabName}</a>`;
-            nav.appendChild(li);
-            // Добавляем секцию
-            const main = document.getElementById('main-content');
-            const sec = document.createElement('section');
-            sec.id = id;
-            sec.className = 'content-section';
-            sec.innerHTML = `<h2 contenteditable="true">${tabName}</h2><p contenteditable="true">Контент новой вкладки...</p>`;
-            main.appendChild(sec);
-            showSection(id);
-        }
-    }
+    fetchData();
 </script>
 
 </body>
