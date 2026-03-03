@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вакеатэ Мовын</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+<div id="speech-bubble"></div>
 
 <header>
     <div class="logo-container" onclick="showSection('home')">
@@ -20,25 +21,27 @@
             <a onclick="showSection('alphabet')">Буквы</a>
             <a onclick="showSection('vocab')">Слова</a>
         </span>
-        <button id="theme-btn" onclick="cycleTheme()" style="margin-left:15px;">Тема</button>
+        <button id="theme-btn" onclick="cycleTheme()">Тема</button>
     </div>
 </header>
 
 <main>
     <div id="loader">
         <div class="spinner"></div>
-        <p style="margin-top: 15px; font-weight: bold;">Загрузка данных...</p>
+        <p>Загрузка данных...</p>
     </div>
 
     <div id="main-content" class="hidden">
         <section id="home" class="content-section active">
             <h1>Датчэ! 👋</h1>
-            <p>Добро пожаловать. Буква **Ё** на месте!</p>
+            <p>Нажми на букву, чтобы увидеть её произношение. Буква **Ё** сохранена.</p>
         </section>
+
         <section id="alphabet" class="content-section">
             <h2>Алфавит</h2>
             <div class="grid" id="alpha-grid"></div>
         </section>
+
         <section id="vocab" class="content-section">
             <h2>Словарь</h2>
             <div id="vocab-list"></div>
@@ -47,6 +50,5 @@
 </main>
 
 <script src="js/script.js"></script>
-
 </body>
 </html>
