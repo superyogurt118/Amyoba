@@ -84,6 +84,7 @@
             display: block;
             box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
             transition: transform 0.2s, box-shadow 0.2s;
+            /* никакого фона, padding или border */
         }
         .sidebar .logo:hover {
             transform: scale(1.02);
@@ -250,11 +251,10 @@
 </head>
 <body>
     <div class="app" id="app">
-        <!-- Боковое меню с логотипом -->
+        <!-- Боковое меню с логотипом (только тень, никакого белого фона) -->
         <div class="sidebar" id="sidebar">
             <button class="close-menu" id="closeMenuBtn" aria-label="Закрыть меню">✕</button>
             <div class="logo-container">
-                <!-- Логотип: только тень, без фона и обводки -->
                 <img src="logo.png" alt="логотип" class="logo">
             </div>
             <button class="menu-item active" data-tab="about">О языке</button>
