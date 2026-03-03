@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>язык · контрастно и мягко</title>
-    <!-- Шрифт Inter с разными весами -->
+    <title>язык · бело‑жёлтый</title>
+    <!-- Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
-        /* Сброс */
         * {
             margin: 0;
             padding: 0;
@@ -17,7 +16,7 @@
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
             background-color: #ffffff;
             color: #000000;
             line-height: 1.5;
@@ -29,10 +28,10 @@
             width: 100%;
         }
 
-        /* ---------- Боковое меню (насыщенный оранжевый) ---------- */
+        /* ---------- Боковое меню (насыщенный жёлтый) ---------- */
         .sidebar {
             width: 290px;
-            background-color: #ff5f00;  /* яркий оранжевый */
+            background-color: #FFB800;  /* яркий жёлтый */
             color: #000000;
             padding: 2rem 1.5rem;
             transition: width 0.25s ease, padding 0.25s ease;
@@ -68,27 +67,25 @@
         }
         .close-menu:hover {
             background-color: #000000;
-            color: #ff5f00;
+            color: #FFB800;  /* жёлтый текст */
             transform: scale(1.03);
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
         }
 
-        /* Контейнер для логотипа */
         .sidebar .logo-container {
             margin-bottom: 2rem;
-            padding-right: 2.5rem; /* чтобы не налезать на крестик */
+            padding-right: 2.5rem;
         }
 
-        /* Стили для логотипа: тень, обводка, фон для читаемости */
         .sidebar .logo {
             max-width: 100%;
             height: auto;
             display: block;
-            border: 3px solid #000000;           /* чёрная обводка */
-            border-radius: 20px;                  /* скругление под общий стиль */
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35); /* глубокая тень */
-            background-color: #ffffff;            /* белый фон для прозрачных PNG */
-            padding: 10px;                         /* воздух между картинкой и рамкой */
+            border: 3px solid #000000;
+            border-radius: 20px;
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
+            background-color: #ffffff;
+            padding: 10px;
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .sidebar .logo:hover {
@@ -114,13 +111,13 @@
         }
         .menu-item:hover {
             background-color: #000000;
-            color: #ff5f00;
+            color: #FFB800;  /* жёлтый */
             transform: translateY(-2px);
             box-shadow: 0 10px 18px rgba(0, 0, 0, 0.2);
         }
         .menu-item.active {
             background-color: #000000;
-            color: #ff5f00;
+            color: #FFB800;  /* жёлтый */
             font-weight: 700;
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.25);
             border: 1px solid #ffffff;
@@ -141,7 +138,7 @@
             position: absolute;
             top: 1.8rem;
             left: 1.8rem;
-            background: #ff5f00;
+            background: #FFB800;  /* жёлтый */
             border: none;
             font-size: 2.6rem;
             padding: 0.2rem 1.2rem 0.5rem 1.2rem;
@@ -157,7 +154,7 @@
         }
         .open-menu:hover {
             background-color: #000000;
-            color: #ff5f00;
+            color: #FFB800;
             transform: scale(1.02);
             box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25);
         }
@@ -251,7 +248,6 @@
             .placeholder-message {
                 font-size: 1.8rem;
             }
-            /* чуть уменьшим отступы и обводку логотипа */
             .sidebar .logo {
                 border-width: 2px;
                 padding: 6px;
@@ -266,7 +262,6 @@
         <div class="sidebar" id="sidebar">
             <button class="close-menu" id="closeMenuBtn" aria-label="Закрыть меню">✕</button>
             <div class="logo-container">
-                <!-- Логотип с тенью и обводкой -->
                 <img src="logo.png" alt="логотип" class="logo">
             </div>
             <button class="menu-item active" data-tab="about">О языке</button>
