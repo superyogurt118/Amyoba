@@ -50,7 +50,7 @@
             flex-direction: column;
         }
 
-        /* Шапка: уменьшен левый отступ (4%), вкладки придвинуты к логотипу */
+        /* Шапка: минимальные отступы */
         header {
             position: sticky;
             top: 0;
@@ -59,18 +59,18 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--header-border);
-            padding: 12px 4%;
+            padding: 12px 4%; /* левый отступ уменьшен */
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 8px; /* общий зазор между левой и правой частью */
+            gap: 4px; /* общий зазор между левой и правой частью */
         }
 
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px; /* уменьшено с 12px */
             cursor: pointer;
         }
 
@@ -96,22 +96,22 @@
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 10px; /* уменьшено с 18px до 10px */
+            gap: 6px; /* сильно уменьшено (было 10-18) */
             flex-wrap: wrap;
             justify-content: flex-end;
         }
 
         .nav-links {
             display: flex;
-            gap: 4px; /* уменьшено с 8px до 4px */
+            gap: 2px; /* минимальный зазор */
         }
 
         .nav-links a {
             text-decoration: none;
             color: var(--txt);
             font-weight: 700;
-            font-size: 0.95rem;
-            padding: 6px 10px; /* уменьшено с 8px 14px */
+            font-size: 0.9rem; /* чуть меньше */
+            padding: 5px 8px; /* уменьшено */
             border-radius: 30px;
             background: transparent;
             transition: 0.2s;
@@ -130,10 +130,10 @@
             background: var(--gold-grad);
             border: none;
             color: white;
-            padding: 8px 22px;
+            padding: 6px 16px; /* уменьшено */
             border-radius: 40px;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem; /* чуть меньше */
             cursor: pointer;
             box-shadow: 0 6px 16px rgba(var(--accent-rgb), 0.35);
             transition: 0.2s;
@@ -154,8 +154,8 @@
             background: var(--card);
             border: 1px solid var(--border-light);
             border-radius: 40px;
-            padding: 6px 16px;
-            font-size: 1.2rem;
+            padding: 6px 14px; /* немного уменьшено */
+            font-size: 1.1rem;
             cursor: pointer;
             box-shadow: var(--card-shadow);
             transition: 0.2s;
@@ -170,14 +170,14 @@
             left: 100%;
             top: 50%;
             transform: translateY(-50%);
-            margin-left: 8px;
+            margin-left: 6px; /* уменьшено */
             background: var(--card);
             border-radius: 40px;
-            padding: 6px 12px;
+            padding: 5px 10px; /* уменьшено */
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border-light);
             display: flex;
-            gap: 8px;
+            gap: 6px; /* уменьшено */
             align-items: center;
             white-space: nowrap;
             z-index: 1100;
@@ -187,8 +187,8 @@
             display: none;
         }
         .color-dot {
-            width: 28px;
-            height: 28px;
+            width: 24px; /* немного меньше */
+            height: 24px;
             border-radius: 50%;
             border: 2px solid transparent;
             cursor: pointer;
@@ -430,10 +430,11 @@
 
         @media (max-width: 550px) {
             .logo-text { font-size: 1.1rem; }
-            .nav-links a { padding: 5px 8px; font-size: 0.8rem; } /* ещё меньше на мобильных */
-            #theme-btn, #alzheimer-btn { padding: 6px 16px; }
+            .nav-links a { padding: 4px 6px; font-size: 0.8rem; }
+            #theme-btn, #alzheimer-btn { padding: 5px 12px; font-size: 0.8rem; }
             .card { font-size: 2rem; padding: 25px 5px; }
             .vocab-word { font-size: 1.7rem; }
+            .color-picker { left: auto; right: 0; margin-left: 0; margin-right: 8px; } /* для мобильных */
         }
     </style>
 </head>
