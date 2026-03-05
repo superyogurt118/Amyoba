@@ -2,94 +2,326 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вакеатэ Мовын</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>Вакеатэ Мовын · словарь</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
-    
     <style>
-        /* --- ДИЗАЙН (CSS) --- */
+        /* ----- ОСНОВНЫЕ НАСТРОЙКИ (CSS) ----- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         :root {
-            --bg: #fcfaf2; --txt: #2d2d2d; --card: #ffffff;
+            --bg: #fcfaf2;
+            --txt: #2d2d2d;
+            --card: #ffffff;
             --gold-grad: linear-gradient(135deg, #ffd700 0%, #d4af37 100%);
-            --accent: #d4af37; --glass: rgba(252, 250, 242, 0.9);
+            --accent: #d4af37;
+            --glass: rgba(252, 250, 242, 0.9);
             --card-shadow: 0 10px 30px rgba(212, 175, 55, 0.12);
+            --border-light: rgba(212, 175, 55, 0.15);
+            --header-border: rgba(212, 175, 55, 0.2);
         }
 
         [data-theme="dark"] {
-            --bg: #0d0d0d; --txt: #f5f5f5; --card: #1a1a1a;
-            --glass: rgba(13, 13, 13, 0.9); --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            --bg: #0d0d0d;
+            --txt: #f5f5f5;
+            --card: #1a1a1a;
+            --glass: rgba(13, 13, 13, 0.9);
+            --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            --border-light: rgba(212, 175, 55, 0.2);
+            --header-border: rgba(212, 175, 55, 0.3);
         }
 
-        * { box-sizing: border-box; outline: none; }
-        body { 
-            font-family: 'Montserrat', sans-serif; margin: 0; background: var(--bg); 
-            color: var(--txt); transition: 0.4s; overflow-x: hidden; 
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg);
+            color: var(--txt);
+            transition: background-color 0.3s, color 0.2s;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Шапка */
+        /* ---------- ШАПКА ---------- */
         header {
-            position: sticky; top: 0; z-index: 1000; background: var(--glass);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            padding: 12px 6%; display: flex; justify-content: space-between; align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--header-border);
+            padding: 12px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px 8px;
         }
 
-        .logo-container { display: flex; align-items: center; gap: 14px; cursor: pointer; }
-        .logo-img { width: 42px; height: 42px; object-fit: contain; }
-        .logo-text { 
-            font-weight: 800; font-size: 22px; 
-            background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
         }
 
-        .nav-links a { text-decoration: none; color: var(--txt); font-weight: 700; font-size: 0.9rem; cursor: pointer; margin-left: 15px; transition: 0.3s; }
-        .nav-links a:hover { color: var(--accent); }
-
-        #theme-btn { 
-            background: var(--gold-grad); border: none; color: white; padding: 8px 18px; 
-            border-radius: 12px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); 
+        .logo-emoji {
+            width: 44px;
+            height: 44px;
+            background: var(--gold-grad);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 26px;
+            box-shadow: 0 6px 14px rgba(212, 175, 55, 0.4);
+            transition: transform 0.2s;
+        }
+        .logo-container:hover .logo-emoji {
+            transform: rotate(4deg) scale(1.02);
         }
 
-        /* Облачко произношения */
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.3rem;
+            background: var(--gold-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--txt);
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 8px 14px;
+            border-radius: 30px;
+            background: transparent;
+            transition: 0.2s;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover {
+            background: var(--gold-grad);
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 6px 14px rgba(212, 175, 55, 0.3);
+        }
+
+        #theme-btn {
+            background: var(--gold-grad);
+            border: none;
+            color: white;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(212, 175, 55, 0.35);
+            transition: 0.2s;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        #theme-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 22px rgba(212, 175, 55, 0.5);
+        }
+
+        /* ---------- ПОДСКАЗКА ПРОИЗНОШЕНИЯ ---------- */
         #speech-bubble {
-            position: fixed; top: 90px; left: 50%; transform: translateX(-50%);
-            background: var(--gold-grad); color: white; padding: 12px 30px;
-            border-radius: 50px; font-weight: 700; display: none; z-index: 2000;
-            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
+            position: fixed;
+            top: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold-grad);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: none;
+            z-index: 2000;
+            box-shadow: 0 16px 40px rgba(212, 175, 55, 0.5);
             animation: pop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+            max-width: 90vw;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            pointer-events: none;
+            border: 1px solid rgba(255,255,240,0.4);
         }
-        @keyframes pop { from { opacity: 0; transform: translateX(-50%) scale(0.8); } to { opacity: 1; transform: translateX(-50%) scale(1); } }
 
-        main { padding: 40px 6%; max-width: 1100px; margin: 0 auto; }
-        .content-section { display: none; }
-        .content-section.active { display: block; animation: fadeIn 0.6s ease both; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pop {
+            from { opacity: 0; transform: translateX(-50%) scale(0.8); }
+            to { opacity: 1; transform: translateX(-50%) scale(1); }
+        }
 
-        /* Карточки Алфавита */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 20px; }
+        /* ---------- ОСНОВНОЙ КОНТЕЙНЕР ---------- */
+        main {
+            padding: 40px 6%;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease both;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 25px;
+            font-size: 2rem;
+            border-left: 6px solid var(--accent);
+            padding-left: 18px;
+        }
+
+        /* ---------- СЕТКА АЛФАВИТА ---------- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 20px;
+        }
+
         .card {
-            background: var(--card); border-radius: 25px; padding: 40px 15px;
-            text-align: center; font-size: 2.2rem; font-weight: 800;
-            box-shadow: var(--card-shadow); border: 1px solid rgba(212, 175, 55, 0.05);
-            cursor: help; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: var(--card);
+            border-radius: 28px;
+            padding: 32px 8px;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-light);
+            cursor: help;
+            transition: 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             user-select: none;
+            line-height: 1;
         }
-        .card:hover { transform: translateY(-10px) rotate(2deg); border-color: var(--accent); box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2); }
 
-        /* Состояние "Пусто" в словаре */
-        .empty-msg { 
-            text-align: center; padding: 60px; font-size: 1.2rem; 
-            opacity: 0.5; font-style: italic; font-weight: 600;
-            border: 2px dashed rgba(212, 175, 55, 0.2); border-radius: 30px;
+        .card:hover {
+            transform: translateY(-10px) rotate(1.5deg);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.25);
+        }
+
+        /* ---------- СЛОВАРЬ ---------- */
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .vocab-card {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 24px 20px;
+            box-shadow: var(--card-shadow);
+            border-left: 8px solid var(--accent);
+            transition: 0.2s;
+            border: 1px solid var(--border-light);
+            backdrop-filter: blur(4px);
+        }
+
+        .vocab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .vocab-word {
+            font-weight: 800;
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .vocab-trans {
+            font-size: 1.2rem;
+            opacity: 0.85;
+            border-top: 2px dashed var(--border-light);
+            padding-top: 12px;
+            font-style: italic;
+        }
+
+        .empty-msg {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 1.3rem;
+            opacity: 0.5;
+            font-style: italic;
+            font-weight: 600;
+            border: 2px dashed rgba(212, 175, 55, 0.25);
+            border-radius: 40px;
+            background: var(--card);
+        }
+
+        /* ---------- ДОПОЛНИТЕЛЬНО ---------- */
+        .highlight {
+            font-weight: 800;
+            color: var(--accent);
+            background: linear-gradient(145deg, transparent 50%, rgba(212, 175, 55, 0.1) 90%);
+            padding: 0 4px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            opacity: 0.5;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 550px) {
+            .logo-text { font-size: 1.1rem; }
+            .nav-links a { padding: 6px 12px; font-size: 0.85rem; }
+            #theme-btn { padding: 6px 16px; }
+            .card { font-size: 2rem; padding: 25px 5px; }
+            .vocab-word { font-size: 1.7rem; }
         }
     </style>
 </head>
 <body>
 
+<!-- плавающее произношение -->
 <div id="speech-bubble"></div>
 
+<!-- ШАПКА -->
 <header>
     <div class="logo-container" onclick="showSection('home')">
-        <img id="main-logo" src="logo.png" alt="Лого" class="logo-img">
+        <div class="logo-emoji">В</div>
         <div class="logo-text">Вакеатэ Мовын</div>
     </div>
     <div class="nav-right">
@@ -97,93 +329,146 @@
             <a onclick="showSection('alphabet')">Буквы</a>
             <a onclick="showSection('vocab')">Слова</a>
         </nav>
-        <button id="theme-btn" onclick="cycleTheme()" style="margin-left: 20px;">Тема</button>
+        <button id="theme-btn" onclick="cycleTheme()">🌓 Тема</button>
     </div>
 </header>
 
 <main>
+    <!-- Главная — теперь просто добро пожаловать -->
     <section id="home" class="content-section active">
-        <h1 style="font-weight: 800; font-size: 3rem;">Датчэ! 👋</h1>
-        <p style="font-size: 1.2rem; opacity: 0.8; line-height: 1.6; max-width: 600px;">
-            Наведи на букву в алфавите, чтобы увидеть, как она произносится. <br>
-            Буква **Ё** сохранена в её первозданном виде.
+        <h1 style="font-weight: 800; font-size: clamp(2rem, 8vw, 3.5rem);">Добро пожаловать! 👋</h1>
+        <p style="font-size: 1.3rem; opacity: 0.8; line-height: 1.6; max-width: 700px;">
+            Здесь вы найдёте алфавит и словарь языка Вакеатэ Мовын.
         </p>
+        <p style="margin-top: 30px; font-size: 1.1rem;">✨ В словарь добавлены новые выражения.</p>
     </section>
 
+    <!-- Алфавит -->
     <section id="alphabet" class="content-section">
-        <h2 style="font-weight: 800; color: var(--accent);">Алфавит</h2>
+        <h2>✧ Алфавит</h2>
         <div class="grid" id="alpha-grid"></div>
     </section>
 
+    <!-- Словарь -->
     <section id="vocab" class="content-section">
-        <h2 style="font-weight: 800; color: var(--accent);">Словарь</h2>
-        <div id="vocab-list">
-            <div class="empty-msg">Слов пока нет</div>
-        </div>
+        <h2>✧ Словарь</h2>
+        <div id="vocab-list"></div>
     </section>
 </main>
 
+<footer>
+    <span>ᚡ Vakeate Movyn · тонкий намёк</span>
+</footer>
+
 <script>
-    /* --- ДАННЫЕ ВСТРОЕНЫ СЮДА --- */
-    const DATABASE = {
-        alphabet: [
-            { char: "А", pron: "а" }, { char: "Б", pron: "б" }, { char: "В", pron: "в" },
-            { char: "Г", pron: "г" }, { char: "Д", pron: "д" }, { char: "Е", pron: "е" },
-            { char: "Ё", pron: "ё" }, { char: "Ж", pron: "ж" }, { char: "Ӝ", pron: "жь" },
-            { char: "З", pron: "з" }, { char: "Ӟ", pron: "зь" }, { char: "И", pron: "и" },
-            { char: "ӥ", pron: "йи" }, { char: "Й", pron: "й" }, { char: "К", pron: "к" },
-            { char: "Л", pron: "л" }, { char: "М", pron: "м" }, { char: "Н", pron: "н" },
-            { char: "О", pron: "о" }, { char: "Ӧ", pron: "оу" }, { char: "П", pron: "п" },
-            { char: "Р", pron: "р" }, { char: "С", pron: "с" }, { char: "Т", pron: "т" },
-            { char: "У", pron: "у" }, { char: "Ф", pron: "ф" }, { char: "Х", pron: "х" },
-            { char: "Ц", pron: "ц" }, { char: "Ч", pron: "тш" }, { char: "Ӵ", pron: "ч" },
-            { char: "Ш", pron: "ш" }, { char: "Щ", pron: "щ" }, { char: "Ъ", pron: "твёрдый" },
-            { char: "Ы", pron: "ы" }, { char: "Ь", pron: "мягкий" }, { char: "Ѣ", pron: "ых" },
-            { char: "Э", pron: "э" }, { char: "Ю", pron: "ю" }, { char: "Я", pron: "я" }
-        ],
-        dictionary: [] // Пустой словарь
-    };
+    (function() {
+        /* --- БАЗА ДАННЫХ (алфавит + слова) --- */
+        const DATABASE = {
+            alphabet: [
+                { char: "А", pron: "а" }, { char: "Б", pron: "б" }, { char: "В", pron: "в" },
+                { char: "Г", pron: "г" }, { char: "Д", pron: "д" }, { char: "Е", pron: "е" },
+                { char: "Ё", pron: "ё" }, { char: "Ж", pron: "ж" }, { char: "Ӝ", pron: "жь" },
+                { char: "З", pron: "з" }, { char: "Ӟ", pron: "зь" }, { char: "И", pron: "и" },
+                { char: "ӥ", pron: "йи" }, { char: "Й", pron: "й" }, { char: "К", pron: "к" },
+                { char: "Л", pron: "л" }, { char: "М", pron: "м" }, { char: "Н", pron: "н" },
+                { char: "О", pron: "о" }, { char: "Ӧ", pron: "оу" }, { char: "П", pron: "п" },
+                { char: "Р", pron: "р" }, { char: "С", pron: "с" }, { char: "Т", pron: "т" },
+                { char: "У", pron: "у" }, { char: "Ф", pron: "ф" }, { char: "Х", pron: "х" },
+                { char: "Ц", pron: "ц" }, { char: "Ч", pron: "тш" }, { char: "Ӵ", pron: "ч" },
+                { char: "Ш", pron: "ш" }, { char: "Щ", pron: "щ" }, { char: "Ъ", pron: "твёрдый" },
+                { char: "Ы", pron: "ы" }, { char: "Ь", pron: "мягкий" }, { char: "Ѣ", pron: "ых" },
+                { char: "Э", pron: "э" }, { char: "Ю", pron: "ю" }, { char: "Я", pron: "я" }
+            ],
+            dictionary: [
+                { word: "Жаёмна", translation: "потеряться в магазине ночью" },
+                { word: "Акоп", translation: "привет" },
+                { word: "Привытэх", translation: "пока" }
+            ]
+        };
 
-    function showHint(text) {
-        const bubble = document.getElementById('speech-bubble');
-        bubble.innerText = `Произносится как: [${text}]`;
-        bubble.style.display = 'block';
-    }
+        /* --- ФУНКЦИИ --- */
+        function showHint(text) {
+            const bubble = document.getElementById('speech-bubble');
+            if (!bubble) return;
+            bubble.innerText = `🔊 [${text}]`;
+            bubble.style.display = 'block';
+        }
 
-    function hideHint() {
-        document.getElementById('speech-bubble').style.display = 'none';
-    }
+        function hideHint() {
+            const bubble = document.getElementById('speech-bubble');
+            if (bubble) bubble.style.display = 'none';
+        }
 
-    function cycleTheme() {
-        const body = document.body;
-        const current = body.getAttribute('data-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
-        body.setAttribute('data-theme', next);
-        localStorage.setItem('vakeate-theme', next);
-    }
+        function cycleTheme() {
+            const body = document.body;
+            const current = body.getAttribute('data-theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', next);
+            localStorage.setItem('vakeate-theme', next);
+        }
 
-    function showSection(id) {
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
+        function showSection(id) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            const section = document.getElementById(id);
+            if (section) section.classList.add('active');
+            if (id === 'vocab') renderVocab();
+        }
 
-    // Инициализация страницы
-    function init() {
-        // Загрузка темы
-        document.body.setAttribute('data-theme', localStorage.getItem('vakeate-theme') || 'light');
+        function renderAlphabet() {
+            const grid = document.getElementById('alpha-grid');
+            if (!grid) return;
+            grid.innerHTML = DATABASE.alphabet.map(item => {
+                const pron = item.pron.replace(/'/g, "&apos;");
+                return `<div class="card" 
+                    onmouseenter="showHint('${pron}')" onmouseleave="hideHint()"
+                    ontouchstart="showHint('${pron}')" ontouchend="hideHint()">
+                    ${item.char}
+                </div>`;
+            }).join('');
+        }
 
-        // Отрисовка Алфавита
-        const grid = document.getElementById('alpha-grid');
-        grid.innerHTML = DATABASE.alphabet.map(item => `
-            <div class="card" 
-                 onmouseenter="showHint('${item.pron}')" onmouseleave="hideHint()"
-                 ontouchstart="showHint('${item.pron}')" ontouchend="hideHint()">
-                ${item.char}
-            </div>
-        `).join('');
-    }
+        function renderVocab() {
+            const container = document.getElementById('vocab-list');
+            if (!container) return;
 
-    window.onload = init;
+            if (!DATABASE.dictionary || DATABASE.dictionary.length === 0) {
+                container.innerHTML = '<div class="empty-msg">📭 Слов пока нет</div>';
+                return;
+            }
+
+            let html = '<div class="vocab-grid">';
+            DATABASE.dictionary.forEach(entry => {
+                html += `
+                    <div class="vocab-card">
+                        <div class="vocab-word">${entry.word}</div>
+                        <div class="vocab-trans">${entry.translation}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function init() {
+            const savedTheme = localStorage.getItem('vakeate-theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+
+            renderAlphabet();
+            renderVocab();
+            showSection('home');
+
+            document.addEventListener('touchmove', function() {
+                hideHint();
+            }, { passive: true });
+        }
+
+        window.showHint = showHint;
+        window.hideHint = hideHint;
+        window.cycleTheme = cycleTheme;
+        window.showSection = showSection;
+
+        window.addEventListener('DOMContentLoaded', init);
+    })();
 </script>
 
 </body>
