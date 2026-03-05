@@ -50,6 +50,7 @@
             flex-direction: column;
         }
 
+        /* Шапка: разделена на левую и правую группы */
         header {
             position: sticky;
             top: 0;
@@ -63,7 +64,15 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 4px;
+            gap: 8px;
+        }
+
+        /* Левая группа: логотип и вкладки */
+        .left-group {
+            display: flex;
+            align-items: center;
+            gap: 12px; /* небольшой отступ между логотипом и вкладками */
+            flex-wrap: wrap;
         }
 
         .logo-container {
@@ -92,14 +101,6 @@
             letter-spacing: 0.5px;
         }
 
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
-
         .nav-links {
             display: flex;
             gap: 2px;
@@ -125,6 +126,15 @@
             box-shadow: 0 6px 14px rgba(var(--accent-rgb), 0.3);
         }
 
+        /* Правая группа: палитра и кнопки */
+        .right-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
         #theme-btn, #alzheimer-btn {
             background: var(--gold-grad);
             border: none;
@@ -143,7 +153,7 @@
             box-shadow: 0 8px 22px rgba(var(--accent-rgb), 0.5);
         }
 
-        /* Цветовая палитра — теперь выпадает ВЛЕВО */
+        /* Цветовая палитра — выпадает влево от кнопки */
         .color-picker-wrapper {
             position: relative;
             display: flex;
@@ -169,7 +179,7 @@
             right: 100%;        /* слева от кнопки */
             top: 50%;
             transform: translateY(-50%);
-            margin-right: 8px;   /* отступ от кнопки */
+            margin-right: 8px;
             background: var(--card);
             border-radius: 40px;
             padding: 5px 10px;
@@ -433,8 +443,7 @@
             #theme-btn, #alzheimer-btn { padding: 5px 12px; font-size: 0.8rem; }
             .card { font-size: 2rem; padding: 25px 5px; }
             .vocab-word { font-size: 1.7rem; }
-            /* на мобильных палитра может не помещаться слева, оставляем как есть, но можно адаптировать */
-            .color-picker { right: 100%; left: auto; } /* остаётся слева */
+            /* на мобильных палитра может не помещаться слева, но оставляем как есть */
         }
     </style>
 </head>
@@ -443,18 +452,21 @@
 <div id="speech-bubble"></div>
 
 <header>
-    <div class="logo-container" onclick="showSection('home')">
-        <img id="main-logo" src="logo.png" alt="Лого" class="logo-img">
-        <div class="logo-text">Вакеатэ Мовын</div>
-    </div>
-    <div class="nav-right">
+    <!-- Левая группа: логотип и вкладки -->
+    <div class="left-group">
+        <div class="logo-container" onclick="showSection('home')">
+            <img id="main-logo" src="logo.png" alt="Лого" class="logo-img">
+            <div class="logo-text">Вакеатэ Мовын</div>
+        </div>
         <nav class="nav-links">
             <a onclick="showSection('alphabet')">Буквы</a>
             <a onclick="showSection('vocab')">Слова</a>
             <a onclick="showSection('quotes')">Цитаты</a>
         </nav>
+    </div>
 
-        <!-- Цветовая палитра: изначально открыта, кнопка ❌, выпадает влево -->
+    <!-- Правая группа: палитра и кнопки -->
+    <div class="right-group">
         <div class="color-picker-wrapper">
             <span class="color-picker-toggle" id="colorPickerToggle" title="Выбрать цвет">❌</span>
             <div class="color-picker" id="colorPicker">
