@@ -6,7 +6,7 @@
     <title>Вакеатэ Мовын · словарь</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* ----- ОСНОВНЫЕ НАСТРОЙКИ (CSS) ----- */
+        /* ----- ОСНОВНЫЕ НАСТРОЙКИ ----- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -414,14 +414,6 @@
             font-style: italic;
         }
 
-        /* ---------- ДОПОЛНИТЕЛЬНО ---------- */
-        .highlight {
-            font-weight: 800;
-            color: var(--accent);
-            background: linear-gradient(145deg, transparent 50%, rgba(var(--accent-rgb), 0.1) 90%);
-            padding: 0 4px;
-        }
-
         footer {
             text-align: center;
             padding: 25px;
@@ -440,10 +432,8 @@
 </head>
 <body>
 
-<!-- плавающее произношение -->
 <div id="speech-bubble"></div>
 
-<!-- ШАПКА -->
 <header>
     <div class="logo-container" onclick="showSection('home')">
         <img id="main-logo" src="logo.png" alt="Лого" class="logo-img">
@@ -456,7 +446,7 @@
             <a onclick="showSection('quotes')">Цитаты</a>
         </nav>
 
-        <!-- Цветовая палитра со сворачиванием -->
+        <!-- Цветовая палитра со сворачиванием и сменой иконки -->
         <div class="color-picker-wrapper">
             <span class="color-picker-toggle" id="colorPickerToggle" title="Выбрать цвет">🎨</span>
             <div class="color-picker" id="colorPicker">
@@ -473,7 +463,6 @@
 </header>
 
 <main>
-    <!-- Главная -->
     <section id="home" class="content-section active">
         <h1 style="font-weight: 800; font-size: clamp(2rem, 8vw, 3.5rem);">Добро пожаловать! 👋</h1>
         <p style="font-size: 1.3rem; opacity: 0.8; line-height: 1.6; max-width: 700px;">
@@ -482,13 +471,11 @@
         <p style="margin-top: 30px; font-size: 1.1rem;">✨ В словарь добавлены новые выражения и цифры.</p>
     </section>
 
-    <!-- Алфавит -->
     <section id="alphabet" class="content-section">
         <h2>✧ Алфавит</h2>
         <div class="grid" id="alpha-grid"></div>
     </section>
 
-    <!-- Словарь с поиском и фильтрацией -->
     <section id="vocab" class="content-section">
         <h2>✧ Словарь</h2>
         <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Поиск по слову или переводу...">
@@ -496,7 +483,6 @@
         <div id="vocab-list"></div>
     </section>
 
-    <!-- Цитаты -->
     <section id="quotes" class="content-section">
         <h2>✧ Цитаты великих людей</h2>
         <div class="quote-block">
@@ -506,14 +492,10 @@
     </section>
 </main>
 
-<!-- Подвал пустой -->
-<footer>
-    <span></span>
-</footer>
+<footer><span></span></footer>
 
 <script>
     (function() {
-        /* --- БАЗА ДАННЫХ --- */
         const DATABASE = {
             alphabet: [
                 { char: "А", pron: "а" }, { char: "Б", pron: "б" }, { char: "В", pron: "в" },
@@ -531,11 +513,12 @@
                 { char: "Э", pron: "э" }, { char: "Ю", pron: "ю" }, { char: "Я", pron: "я" }
             ],
             dictionary: [
-                // Старые слова
+                // Два похожих слова теперь рядом и оба с большой буквы
                 { word: "Жаёмна", translation: "потеряться в магазине ночью", part: "глагол" },
+                { word: "Жаемна", translation: "автор Сибилевца", part: "существительное" },
+                // Остальные слова
                 { word: "Акоп", translation: "привет", part: "междометие" },
                 { word: "Привытэх", translation: "пока", part: "междометие" },
-                // Новые цифры (значения от 1 до 9 и 0)
                 { word: "Тоӝма", translation: "один (1)", part: "числительное" },
                 { word: "Дви", translation: "два (2)", part: "числительное" },
                 { word: "Ирс", translation: "три (3)", part: "числительное" },
@@ -545,22 +528,19 @@
                 { word: "Юдаы", translation: "семь (7)", part: "числительное" },
                 { word: "Жэлда", translation: "восемь (8)", part: "числительное" },
                 { word: "Гонӟ", translation: "девять (9)", part: "числительное" },
-                { word: "Ӥнг", translation: "ноль (0)", part: "числительное" },
-                // Слово, связанное с автором Сибилевца (по вашему напоминанию)
-                { word: "жаемна", translation: "автор Сибилевца", part: "существительное" }
+                { word: "Ӥнг", translation: "ноль (0)", part: "числительное" }
             ]
         };
 
-        // Состояние фильтра и поиска
         let currentFilter = 'все';
         let searchQuery = '';
 
-        /* --- ФУНКЦИИ --- */
         function showHint(text) {
             const bubble = document.getElementById('speech-bubble');
-            if (!bubble) return;
-            bubble.innerText = `🔊 [${text}]`;
-            bubble.style.display = 'block';
+            if (bubble) {
+                bubble.innerText = `🔊 [${text}]`;
+                bubble.style.display = 'block';
+            }
         }
 
         function hideHint() {
@@ -782,6 +762,12 @@
             if (toggleBtn && picker) {
                 toggleBtn.addEventListener('click', () => {
                     picker.classList.toggle('collapsed');
+                    // Меняем иконку: если свёрнуто (collapsed есть) — 🎨, иначе ❌
+                    if (picker.classList.contains('collapsed')) {
+                        toggleBtn.innerText = '🎨';
+                    } else {
+                        toggleBtn.innerText = '❌';
+                    }
                 });
             }
 
@@ -806,9 +792,7 @@
 
             setAccentColor('gold');
 
-            document.addEventListener('touchmove', function() {
-                hideHint();
-            }, { passive: true });
+            document.addEventListener('touchmove', () => hideHint(), { passive: true });
         }
 
         window.showHint = showHint;
@@ -819,6 +803,5 @@
         window.addEventListener('DOMContentLoaded', init);
     })();
 </script>
-
 </body>
 </html>
