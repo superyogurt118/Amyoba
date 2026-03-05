@@ -14,9 +14,9 @@
         }
 
         :root {
-            --bg-light: #fcfaf2;        /* базовый светлый фон */
-            --bg-dark: #0d0d0d;          /* базовый тёмный фон */
-            --bg: var(--bg-light);       /* текущий фон */
+            --bg-light: #fcfaf2;
+            --bg-dark: #0d0d0d;
+            --bg: var(--bg-light);
             --txt: #2d2d2d;
             --card: #ffffff;
             --gold-grad: linear-gradient(135deg, #ffd700 0%, #d4af37 100%);
@@ -443,7 +443,7 @@
 <!-- плавающее произношение -->
 <div id="speech-bubble"></div>
 
-<!-- ШАПКА с логотипом и пунктом "Цитаты" -->
+<!-- ШАПКА -->
 <header>
     <div class="logo-container" onclick="showSection('home')">
         <img id="main-logo" src="logo.png" alt="Лого" class="logo-img">
@@ -473,13 +473,13 @@
 </header>
 
 <main>
-    <!-- Главная — добро пожаловать -->
+    <!-- Главная -->
     <section id="home" class="content-section active">
         <h1 style="font-weight: 800; font-size: clamp(2rem, 8vw, 3.5rem);">Добро пожаловать! 👋</h1>
         <p style="font-size: 1.3rem; opacity: 0.8; line-height: 1.6; max-width: 700px;">
             Здесь вы найдёте алфавит, словарь и мудрые цитаты языка Вакеатэ Мовын.
         </p>
-        <p style="margin-top: 30px; font-size: 1.1rem;">✨ В словарь добавлены новые выражения.</p>
+        <p style="margin-top: 30px; font-size: 1.1rem;">✨ В словарь добавлены новые выражения и цифры.</p>
     </section>
 
     <!-- Алфавит -->
@@ -531,9 +531,23 @@
                 { char: "Э", pron: "э" }, { char: "Ю", pron: "ю" }, { char: "Я", pron: "я" }
             ],
             dictionary: [
+                // Старые слова
                 { word: "Жаёмна", translation: "потеряться в магазине ночью", part: "глагол" },
                 { word: "Акоп", translation: "привет", part: "междометие" },
-                { word: "Привытэх", translation: "пока", part: "междометие" }
+                { word: "Привытэх", translation: "пока", part: "междометие" },
+                // Новые цифры (значения от 1 до 9 и 0)
+                { word: "Тоӝма", translation: "один (1)", part: "числительное" },
+                { word: "Дви", translation: "два (2)", part: "числительное" },
+                { word: "Ирс", translation: "три (3)", part: "числительное" },
+                { word: "Ӵорыло", translation: "четыре (4)", part: "числительное" },
+                { word: "Пакунга", translation: "пять (5)", part: "числительное" },
+                { word: "Булт", translation: "шесть (6)", part: "числительное" },
+                { word: "Юдаы", translation: "семь (7)", part: "числительное" },
+                { word: "Жэлда", translation: "восемь (8)", part: "числительное" },
+                { word: "Гонӟ", translation: "девять (9)", part: "числительное" },
+                { word: "Ӥнг", translation: "ноль (0)", part: "числительное" },
+                // Слово, связанное с автором Сибилевца (по вашему напоминанию)
+                { word: "жаемна", translation: "автор Сибилевца", part: "существительное" }
             ]
         };
 
@@ -554,28 +568,23 @@
             if (bubble) bubble.style.display = 'none';
         }
 
-        // Переключение темы (светлая/тёмная)
         function cycleTheme() {
             const body = document.body;
             const current = body.getAttribute('data-theme') || 'light';
             const next = current === 'dark' ? 'light' : 'dark';
             body.setAttribute('data-theme', next);
             localStorage.setItem('vakeate-theme', next);
-            updateBackgroundForCurrentTheme(); // обновить фон в соответствии с выбранным цветом
+            updateBackgroundForCurrentTheme();
         }
 
-        // Обновление фона в зависимости от текущей темы и акцентного цвета
         function updateBackgroundForCurrentTheme() {
             const theme = document.body.getAttribute('data-theme') || 'light';
             const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-            // Преобразуем цвет в светлый/тёмный оттенок
-            const bgColor = shadeColor(accentColor, theme === 'light' ? 0.95 : 0.05); // светлота 95% для светлой темы, 5% для тёмной
+            const bgColor = shadeColor(accentColor, theme === 'light' ? 0.95 : 0.05);
             document.documentElement.style.setProperty('--bg', bgColor);
         }
 
-        // Вспомогательная функция: затемнение/осветление цвета (hex -> hsl и изменение lightness)
         function shadeColor(hex, lightness) {
-            // Простейшее преобразование hex в rgb
             let r, g, b;
             if (hex.startsWith('#')) {
                 const bigint = parseInt(hex.slice(1), 16);
@@ -583,14 +592,10 @@
                 g = (bigint >> 8) & 255;
                 b = bigint & 255;
             } else {
-                // fallback
                 return hex;
             }
-            // Переводим в hsl
             let hsl = rgbToHsl(r, g, b);
-            // Устанавливаем новую светлоту (lightness от 0 до 1)
             hsl[2] = lightness;
-            // Обратно в rgb
             let rgb = hslToRgb(hsl[0], hsl[1], hsl[2]);
             return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
         }
@@ -646,7 +651,6 @@
             }
         }
 
-        // Рендер алфавита
         function renderAlphabet() {
             const grid = document.getElementById('alpha-grid');
             if (!grid) return;
@@ -660,13 +664,11 @@
             }).join('');
         }
 
-        // Получить уникальные части речи
         function getUniqueParts() {
             const parts = DATABASE.dictionary.map(entry => entry.part);
             return ['все', ...new Set(parts)];
         }
 
-        // Рендер полосы фильтров
         function renderFilterBar() {
             const container = document.getElementById('filterBar');
             if (!container) return;
@@ -685,7 +687,6 @@
             });
         }
 
-        // Рендер словаря с учётом фильтра и поиска
         function renderVocab() {
             const container = document.getElementById('vocab-list');
             if (!container) return;
@@ -723,7 +724,6 @@
             container.innerHTML = html;
         }
 
-        // Обработчик поиска
         function setupSearch() {
             const searchInput = document.getElementById('searchInput');
             if (!searchInput) return;
@@ -733,7 +733,6 @@
             });
         }
 
-        // Смена основного цвета (акцент) и фона
         function setAccentColor(color) {
             const root = document.documentElement;
             let accent, accentRgb;
@@ -766,21 +765,17 @@
             root.style.setProperty('--accent-rgb', accentRgb);
             root.style.setProperty('--gold-grad', `linear-gradient(135deg, ${accent} 0%, ${adjustBrightness(accent, -20)} 100%)`);
 
-            // Обновить фон под текущую тему
             updateBackgroundForCurrentTheme();
 
-            // Подсветить активную точку
             document.querySelectorAll('.color-dot').forEach(dot => {
                 dot.classList.toggle('active', dot.dataset.color === color);
             });
         }
 
         function adjustBrightness(hex, percent) {
-            // упрощённо возвращаем тот же цвет
             return hex;
         }
 
-        // Инициализация палитры и сворачивания
         function initColorPicker() {
             const toggleBtn = document.getElementById('colorPickerToggle');
             const picker = document.getElementById('colorPicker');
@@ -809,7 +804,6 @@
             showSection('home');
             initColorPicker();
 
-            // Установить начальный фон в соответствии с выбранным цветом (по умолчанию gold)
             setAccentColor('gold');
 
             document.addEventListener('touchmove', function() {
