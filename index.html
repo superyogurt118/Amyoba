@@ -50,7 +50,7 @@
             flex-direction: column;
         }
 
-        /* Шапка: уменьшен отступ слева (было 6%, стало 4%) */
+        /* Шапка: уменьшен левый отступ (4%), вкладки придвинуты к логотипу */
         header {
             position: sticky;
             top: 0;
@@ -59,12 +59,12 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--header-border);
-            padding: 12px 4%;  /* изменено с 6% на 4% */
+            padding: 12px 4%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px 8px;
+            gap: 8px; /* общий зазор между левой и правой частью */
         }
 
         .logo-container {
@@ -96,14 +96,14 @@
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 10px; /* уменьшено с 18px до 10px */
             flex-wrap: wrap;
             justify-content: flex-end;
         }
 
         .nav-links {
             display: flex;
-            gap: 8px;
+            gap: 4px; /* уменьшено с 8px до 4px */
         }
 
         .nav-links a {
@@ -111,7 +111,7 @@
             color: var(--txt);
             font-weight: 700;
             font-size: 0.95rem;
-            padding: 8px 14px;
+            padding: 6px 10px; /* уменьшено с 8px 14px */
             border-radius: 30px;
             background: transparent;
             transition: 0.2s;
@@ -430,11 +430,10 @@
 
         @media (max-width: 550px) {
             .logo-text { font-size: 1.1rem; }
-            .nav-links a { padding: 6px 12px; font-size: 0.85rem; }
+            .nav-links a { padding: 5px 8px; font-size: 0.8rem; } /* ещё меньше на мобильных */
             #theme-btn, #alzheimer-btn { padding: 6px 16px; }
             .card { font-size: 2rem; padding: 25px 5px; }
             .vocab-word { font-size: 1.7rem; }
-            /* на маленьких экранах палитра может быть не помещаться, оставим как есть */
         }
     </style>
 </head>
