@@ -50,7 +50,7 @@
             flex-direction: column;
         }
 
-        /* Шапка с двумя группами */
+        /* Шапка */
         header {
             position: sticky;
             top: 0;
@@ -151,7 +151,7 @@
             box-shadow: 0 8px 22px rgba(var(--accent-rgb), 0.5);
         }
 
-        /* Цветовая палитра */
+        /* Цветовая палитра — десктопная версия (по умолчанию) */
         .color-picker-wrapper {
             position: relative;
             display: flex;
@@ -211,7 +211,7 @@
             box-shadow: 0 0 0 2px var(--accent);
         }
 
-        /* На мобильных палитра открывается вниз */
+        /* Мобильная версия палитры: изначально скрыта, открывается вниз */
         @media (max-width: 550px) {
             .color-picker {
                 position: absolute;
@@ -226,8 +226,12 @@
                 padding: 10px;
                 border-radius: 20px;
                 white-space: normal;
+                display: flex; /* управляем через класс collapsed */
             }
-            .color-picker .color-dot {
+            .color-picker.collapsed {
+                display: none;
+            }
+            .color-dot {
                 width: 30px;
                 height: 30px;
             }
@@ -727,7 +731,6 @@
 
 <script>
     (function() {
-        // База данных
         const DATABASE = {
             alphabet: [
                 { char: "А", pron: "а" }, { char: "Б", pron: "б" }, { char: "В", pron: "в" },
@@ -762,14 +765,12 @@
             ]
         };
 
-        // Состояния
         let currentFilter = 'все';
         let searchQuery = '';
         let alzheimerMode = false;
-        let alphabetView = 'grid'; // grid или list
-        let vocabView = 'grid';    // grid или list
+        let alphabetView = 'grid';
+        let vocabView = 'grid';
 
-        // Загрузка из localStorage
         try {
             const savedAlz = localStorage.getItem('vakeate-alzheimer');
             if (savedAlz === 'true') alzheimerMode = true;
@@ -828,7 +829,6 @@
             updateBackgroundForCurrentTheme();
         }
 
-        // Цветовые функции
         function hexToRgb(hex) {
             if (hex.startsWith('#')) {
                 const bigint = parseInt(hex.slice(1), 16);
@@ -895,7 +895,6 @@
             document.documentElement.style.setProperty('--bg-rgb', `${rgb[0]}, ${rgb[1]}, ${rgb[2]}`);
         }
 
-        // Переключение секций
         function showSection(id) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             const section = document.getElementById(id);
@@ -908,7 +907,6 @@
             }
         }
 
-        // Рендер алфавита с учётом вида
         function renderAlphabet() {
             const container = document.getElementById('alphabet-container');
             if (!container) return;
@@ -925,13 +923,11 @@
             }
         }
 
-        // Уникальные части речи
         function getUniqueParts() {
             const parts = DATABASE.dictionary.map(entry => entry.part);
             return ['все', ...new Set(parts)];
         }
 
-        // Рендер фильтров
         function renderFilterBar() {
             const container = document.getElementById('filterBar');
             if (!container) return;
@@ -950,7 +946,6 @@
             });
         }
 
-        // Рендер словаря с учётом фильтра, поиска и вида
         function renderVocab() {
             const container = document.getElementById('vocab-container');
             if (!container) return;
@@ -1003,7 +998,6 @@
             }
         }
 
-        // Поиск
         function setupSearch() {
             const searchInput = document.getElementById('searchInput');
             if (!searchInput) return;
@@ -1013,7 +1007,6 @@
             });
         }
 
-        // Переключение вида алфавита
         function initAlphabetViewToggle() {
             const toggle = document.getElementById('alphabetViewToggle');
             if (!toggle) return;
@@ -1027,13 +1020,11 @@
                     renderAlphabet();
                 });
             });
-            // Установить активный по сохранённому
             buttons.forEach(btn => {
                 if (btn.dataset.view === alphabetView) btn.classList.add('active');
             });
         }
 
-        // Переключение вида словаря
         function initVocabViewToggle() {
             const toggle = document.getElementById('vocabViewToggle');
             if (!toggle) return;
@@ -1052,7 +1043,6 @@
             });
         }
 
-        // Переводчик
         function initTranslator() {
             const srcText = document.getElementById('srcText');
             const tgtText = document.getElementById('tgtText');
@@ -1065,14 +1055,11 @@
                 if (!text.trim()) return '';
                 const words = text.trim().split(/\s+/);
                 const translatedWords = words.map(w => {
-                    // убираем знаки препинания для поиска
                     const clean = w.replace(/[.,!?;:()\[\]{}<>]/g, '');
                     if (direction === 'toRus') {
-                        // ищем в словаре слово
                         const entry = DATABASE.dictionary.find(e => e.word.toLowerCase() === clean.toLowerCase());
                         return entry ? entry.translation : w;
                     } else {
-                        // ищем перевод в обратную сторону
                         const entry = DATABASE.dictionary.find(e => e.translation.toLowerCase().includes(clean.toLowerCase()));
                         return entry ? entry.word : w;
                     }
@@ -1101,7 +1088,6 @@
             });
         }
 
-        // Цветовая палитра
         function setAccentColor(color) {
             const root = document.documentElement;
             let accent, accentRgb;
@@ -1126,12 +1112,21 @@
         function initColorPicker() {
             const toggleBtn = document.getElementById('colorPickerToggle');
             const picker = document.getElementById('colorPicker');
-            if (toggleBtn && picker) {
-                toggleBtn.addEventListener('click', () => {
-                    picker.classList.toggle('collapsed');
-                    toggleBtn.innerText = picker.classList.contains('collapsed') ? '🎨' : '❌';
-                });
+            const isMobile = window.matchMedia('(max-width: 550px)').matches;
+
+            // Устанавливаем начальное состояние в зависимости от ориентации
+            if (isMobile) {
+                picker.classList.add('collapsed');
+                toggleBtn.innerText = '🎨';
+            } else {
+                picker.classList.remove('collapsed');
+                toggleBtn.innerText = '❌';
             }
+
+            toggleBtn.addEventListener('click', () => {
+                picker.classList.toggle('collapsed');
+                toggleBtn.innerText = picker.classList.contains('collapsed') ? '🎨' : '❌';
+            });
 
             const dots = document.querySelectorAll('.color-dot');
             dots.forEach(dot => {
@@ -1141,7 +1136,6 @@
             });
         }
 
-        // Инициализация
         function init() {
             const savedTheme = localStorage.getItem('vakeate-theme') || 'light';
             document.body.setAttribute('data-theme', savedTheme);
