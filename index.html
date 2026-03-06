@@ -50,7 +50,6 @@
             flex-direction: column;
         }
 
-        /* Шапка */
         header {
             position: sticky;
             top: 0;
@@ -151,11 +150,11 @@
             box-shadow: 0 8px 22px rgba(var(--accent-rgb), 0.5);
         }
 
-        /* Цветовая палитра — десктопная версия (по умолчанию) */
+        /* Цветовая палитра — часть потока (не абсолютная) */
         .color-picker-wrapper {
-            position: relative;
             display: flex;
             align-items: center;
+            gap: 4px;
         }
         .color-picker-toggle {
             background: var(--card);
@@ -173,21 +172,14 @@
             transform: scale(1.02);
         }
         .color-picker {
-            position: absolute;
-            right: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            margin-right: 8px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
             background: var(--card);
             border-radius: 40px;
             padding: 5px 10px;
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border-light);
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            white-space: nowrap;
-            z-index: 1100;
             transition: 0.2s;
         }
         .color-picker.collapsed {
@@ -211,29 +203,30 @@
             box-shadow: 0 0 0 2px var(--accent);
         }
 
-        /* Мобильная версия палитры: изначально скрыта, открывается вниз */
+        /* Мобильная адаптация: уменьшаем точки и кнопки, чтобы помещались */
         @media (max-width: 550px) {
-            .color-picker {
-                position: absolute;
-                right: auto;
-                left: 0;
-                top: 100%;
-                transform: translateY(8px);
-                margin-right: 0;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-                padding: 10px;
-                border-radius: 20px;
-                white-space: normal;
-                display: flex; /* управляем через класс collapsed */
-            }
-            .color-picker.collapsed {
-                display: none;
-            }
             .color-dot {
-                width: 30px;
-                height: 30px;
+                width: 20px;
+                height: 20px;
+            }
+            .color-picker {
+                padding: 4px 8px;
+                gap: 4px;
+            }
+            .color-picker-toggle {
+                padding: 4px 10px;
+                font-size: 1rem;
+            }
+            #theme-btn, #alzheimer-btn, #translator-btn {
+                padding: 4px 12px;
+                font-size: 0.8rem;
+            }
+            .nav-links a {
+                padding: 4px 6px;
+                font-size: 0.8rem;
+            }
+            .logo-text {
+                font-size: 1.1rem;
             }
         }
 
@@ -296,7 +289,6 @@
             padding-left: 18px;
         }
 
-        /* Кнопки переключения вида */
         .view-toggle {
             display: flex;
             gap: 8px;
@@ -324,7 +316,6 @@
             transform: translateY(-2px);
         }
 
-        /* Плиточный вид (по умолчанию) */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
@@ -352,7 +343,6 @@
             box-shadow: 0 20px 40px rgba(var(--accent-rgb), 0.25);
         }
 
-        /* Списочный вид для алфавита */
         .alphabet-list {
             display: flex;
             flex-direction: column;
@@ -379,7 +369,6 @@
             opacity: 0.8;
         }
 
-        /* Списочный вид для словаря */
         .vocab-list-view {
             display: flex;
             flex-direction: column;
@@ -416,7 +405,6 @@
             font-style: italic;
         }
 
-        /* Переводчик */
         .translator-container {
             background: var(--card);
             border-radius: 40px;
@@ -622,13 +610,12 @@
         }
 
         @media (max-width: 550px) {
-            .logo-text { font-size: 1.1rem; }
-            .nav-links a { padding: 4px 6px; font-size: 0.8rem; }
-            #theme-btn, #alzheimer-btn, #translator-btn { padding: 5px 12px; font-size: 0.8rem; }
-            .card { font-size: 2rem; padding: 25px 5px; }
-            .vocab-word { font-size: 1.7rem; }
-            .translator-row { flex-direction: column; }
-            .swap-btn { transform: rotate(90deg); }
+            .translator-row {
+                flex-direction: column;
+            }
+            .swap-btn {
+                transform: rotate(90deg);
+            }
         }
     </style>
 </head>
@@ -1112,16 +1099,10 @@
         function initColorPicker() {
             const toggleBtn = document.getElementById('colorPickerToggle');
             const picker = document.getElementById('colorPicker');
-            const isMobile = window.matchMedia('(max-width: 550px)').matches;
 
-            // Устанавливаем начальное состояние в зависимости от ориентации
-            if (isMobile) {
-                picker.classList.add('collapsed');
-                toggleBtn.innerText = '🎨';
-            } else {
-                picker.classList.remove('collapsed');
-                toggleBtn.innerText = '❌';
-            }
+            // Палитра открыта по умолчанию (❌)
+            picker.classList.remove('collapsed');
+            toggleBtn.innerText = '❌';
 
             toggleBtn.addEventListener('click', () => {
                 picker.classList.toggle('collapsed');
