@@ -259,7 +259,7 @@
 
         main {
             padding: 40px 6%;
-            max-width: 1400px; /* увеличен максимальный размер */
+            max-width: 1400px;
             margin: 0 auto;
             width: 100%;
             flex: 1;
@@ -417,7 +417,7 @@
         .translator-row {
             display: flex;
             gap: 20px;
-            align-items: stretch; /* поля одинаковой высоты */
+            align-items: stretch;
             margin-bottom: 30px;
             flex-wrap: wrap;
         }
@@ -914,7 +914,6 @@
             } else if (id === 'alphabet') {
                 renderAlphabet();
             } else if (id === 'translator') {
-                // при открытии переводчика обновляем направление кнопок
                 updateDirectionButtons();
             }
         }
@@ -1110,14 +1109,15 @@
             toRusBtn.addEventListener('click', () => setDirection('toRus'));
             toLangBtn.addEventListener('click', () => setDirection('toLang'));
 
-            // Обмен языков
+            // Обмен языков: меняем тексты и инвертируем направление
             swapBtn.addEventListener('click', () => {
                 const src = srcText.value;
                 const tgt = tgtText.value;
                 srcText.value = tgt;
                 tgtText.value = src;
-                // направление не меняем, текст уже поменялся
-                updateTranslation(); // пересчитаем на всякий случай
+                // меняем направление на противоположное
+                const newDir = currentDirection === 'toRus' ? 'toLang' : 'toRus';
+                setDirection(newDir);
             });
 
             // Начальное состояние
